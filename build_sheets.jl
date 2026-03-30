@@ -57,10 +57,13 @@ render_home =  abspath(joinpath(home_path, "renders"))
 # though, the windows and number of frames are likely to vary per animation and would
 # be better as arrays like the other parameters. 
 
-animation_list = ["Idle1", "Walk"]
+animation_list = ["Idle1", "Walk", "wave"]
 eightway = fill(true, length(animation_list))
 looped = fill(true, length(animation_list))
 speed = fill(10, length(animation_list))
+
+eightway[3] = false
+looped[3] = false
 
 fx(x) = joinpath(render_home, x)
 
@@ -79,7 +82,7 @@ animal = "squirrel"
 [Spritesheets.make_eightway_sheets(anim, fx(animal), joinpath(main_path, animal); cutoff=alpha_cutoff, lower_case=true, output_width=min(nframes[animal]*windows[animal],4096), nframes_per_anim=nframes[animal], window_width=windows[animal], window_height=windows[animal]) for anim in animation_list[eightway]]
 
 # process the non-8-way animations:
-[Spritesheets.make_noneightway_sheets(anim, fx(animal), joinpath(main_path, animal); cutoff=alpha_cutoff, lower_case=true, output_width=min(nframes[animal]*windows[animal],4096), nframes_per_anim=nframes[animal], window_width=windows[animal], window_height=windows[animal]) for anim in animation_list[broadcast(!, eightway)]]
+[Spritesheets.make_noneightway_sheet(anim, fx(animal), joinpath(main_path, animal); cutoff=alpha_cutoff, lower_case=true, output_width=min(nframes[animal]*windows[animal],4096), window_width=windows[animal], window_height=windows[animal]) for anim in animation_list[broadcast(!, eightway)]]
 
 # create empty Godot spriteframes data that can be copied into a spriteframes resource
 Spritesheets.make_empty_sprite_frames(joinpath(main_path, "empty_sprite_frames_animal.txt"), broadcast(x->split(x, "_Blended")[1], animation_list), looped, speed, eightway; do_lower=true)

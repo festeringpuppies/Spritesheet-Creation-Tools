@@ -78,4 +78,9 @@ animations = [{
 "loop": true,
 "name": &"walk_7",
 "speed": 10
+}, {
+"frames": [],
+"loop": false,
+"name": &"wave",
+"speed": 10
 }]

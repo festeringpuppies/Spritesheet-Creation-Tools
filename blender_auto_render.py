@@ -86,7 +86,7 @@ def run_case (animal_name):
         case _:
             print("Animal " + animal_name + " not supported!")
     
-    animation_list = ["Idle1", "Walk"]
+    animation_list = ["Idle1", "Walk", "wave"]
 
     # NOTE: In practice, elements such as end_frame, step, and the rigs/objects to be
     # hidden or muted/unmuted will be set per animation (possibly through a 'match' statement).
@@ -97,8 +97,16 @@ def run_case (animal_name):
         
         end_frame = bpy.context.scene.frame_end
         step = 2
-
-        unmute_rig = [anim, "Rotation"]
+        
+        match anim:
+            case "wave":
+                step = 1
+                end_frame = 15
+                unmute_rig = [anim]
+                mute_rig = ["Rotation"]
+            case _:
+                mute_rig = []
+                unmute_rig = [anim, "Rotation"]
 
         hide_objects(["ShadowPlane"], False)
 
